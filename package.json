@@ -1,0 +1,22 @@
+{
+  "name": "kakistocracy",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "node src/generate.js",
+    "start": "node src/server.js",
+    "dev": "nodemon --watch content --ext html,css --exec 'npm run build' & npm run start"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "connect-livereload": "^0.6.1",
+    "express": "^4.21.2",
+    "http-server": "^14.1.1",
+    "install": "^0.13.0",
+    "livereload": "^0.9.3",
+    "nodemon": "^3.1.9",
+    "npm": "^11.1.0"
+  }
+}
