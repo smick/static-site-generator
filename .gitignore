@@ -1,0 +1,14 @@
+# Ignore generated public files
+public/
+
+# Ignore node modules
+node_modules/
+
+# Ignore dependency lock files (optional, if using Yarn or PNPM)
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Ignore editor and system files (optional)
+.DS_Store
+Thumbs.db
