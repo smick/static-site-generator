@@ -16,6 +16,11 @@ header {
 main {
     padding: 20px;
 }
+img .demo {
+    width: 25%;
+    margin: none;
+    padding: none;
+}
 
 footer {
     background-color: #0073e6;

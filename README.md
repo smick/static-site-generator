@@ -1,4 +1,4 @@
-# Static Site Generator
+# Sx4 (Super Simple Static Site) + Generator
 
 ## 🚀 Overview
 This simple static site generator:
