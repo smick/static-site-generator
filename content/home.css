@@ -1,3 +1,14 @@
-img {
-    width: 25%;
+/* Home Page Specific Styles */
+main {
+    text-align: center;
+}
+
+img.demo {
+    width: 50%;
+    border-radius: 10px;
+    transition: transform 0.3s ease-in-out;
+}
+
+img.demo:hover {
+    transform: scale(1.05);
 }

@@ -1,6 +1,19 @@
+/* Test Page Specific Styles */
 main {
     background-color: #ffffff;
     border: 1px solid #ddd;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    text-align: left;
+}
+
+h2 {
+    color: #0073e6;
+}
+
+a {
+    display: inline-block;
+    margin-top: 10px;
+    font-weight: bold;
 }

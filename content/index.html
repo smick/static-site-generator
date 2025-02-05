@@ -5,15 +5,16 @@
     <title>Welcome to My Static Site</title>
     <link rel="stylesheet" href="/common/main.css">
     <link rel="stylesheet" href="home.css">
+    <link rel="stylesheet" href="include-me.css">
 </head>
 <body>
-    {{ include common/_header.html }}
+    {{ include /common/_header.html }}
     <main>
         <h2>Welcome!</h2>
         <p>This is the home page of my open-source static site generator.</p>
         {{ include _include-me.html }}
         <img class="demo" src="./img/rubber-duck.jpg">
     </main>
-    {{ include common/_footer.html }}
+    {{ include /common/_footer.html }}
 </body>
 </html>
