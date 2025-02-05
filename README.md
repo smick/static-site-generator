@@ -2,7 +2,7 @@
 
 ## 🚀 Overview
 Sx4 is a lightweight **static site generator** that:
-- Supports **reusable components** with `{{ include common/_header.html }}`.
+- Supports **reusable components** with `{{ include /common/_header.html }}`.
 - **Copies everything** to `public/`, **unless it starts with an underscore (`_`)**.
 - **Deletes old files** before rebuilding.
 - Provides **local development** with automatic hot reloading via `npm run dev`.
