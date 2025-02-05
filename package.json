@@ -8,8 +8,8 @@
     "start": "node src/server.js",
     "dev": "nodemon --watch content --ext html,css --exec 'npm run build' & npm run start"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Nathan COBB",
+  "license": "MIT",
   "devDependencies": {
     "connect-livereload": "^0.6.1",
     "express": "^4.21.2",

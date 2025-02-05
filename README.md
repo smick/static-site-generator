@@ -101,6 +101,46 @@ npm run dev
 
 ---
 
+## 🚀 Using Sx4 for Your Own Project
+
+### **1️⃣ Clone the Repository**
+```sh
+git clone https://github.com/smick/static-site-generator.git my-project
+cd my-project
+```
+
+### **2️⃣ Update `package.json`**
+Edit `package.json` to update the project details:
+```json
+{
+  "name": "my-project",
+  "version": "1.0.0",
+  "description": "My custom static site",
+  "author": "Your Name",
+  "license": "MIT"
+}
+```
+
+### **3️⃣ Set Up Your Own Git Repository**
+1. Remove the existing Git history:
+   ```sh
+   rm -rf .git
+   ```
+2. Initialize a new Git repository:
+   ```sh
+   git init
+   git add .
+   git commit -m "Initial commit for my project"
+   ```
+3. Set your new GitHub repository:
+   ```sh
+   git remote add origin https://github.com/YOUR_GITHUB_USERNAME/YOUR_REPO_NAME.git
+   git branch -M main
+   git push -u origin main
+   ```
+
+---
+
 ## 🎯 Features Recap
 ✅ **Copies everything** unless it starts with `_`  
 ✅ **Reusable includes** for headers & footers (ignored in output, used in templates)  
