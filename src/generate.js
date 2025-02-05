@@ -1,5 +1,11 @@
-const fs = require("fs");
-const path = require("path");
+import fs from "fs";
+import path from "path";
+import chalk from "chalk";
+import { fileURLToPath } from "url";
+
+// Ensure __dirname works in ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Paths
 const CONTENT_DIR = path.join(__dirname, "../content");
@@ -9,19 +15,25 @@ const PUBLIC_DIR = path.join(__dirname, "../public");
 const cleanPublicDir = () => {
     if (fs.existsSync(PUBLIC_DIR)) {
         fs.rmSync(PUBLIC_DIR, { recursive: true, force: true });
-        console.log(`Deleted old public directory: ${PUBLIC_DIR}`);
+        console.log(chalk.green("🗑️  Deleted old public directory"));
     }
     fs.mkdirSync(PUBLIC_DIR, { recursive: true });
+    console.log(chalk.green("📁 Created new public directory"));
 };
 
 // Function to copy a file
 const copyFile = (src, dest) => {
-    fs.copyFileSync(src, dest);
-    console.log(`Copied: ${src} → ${dest}`);
+    try {
+        fs.copyFileSync(src, dest);
+        console.log(chalk.green(`✅ Copied: ${src} → ${dest}`));
+    } catch (error) {
+        console.error(chalk.red(`❌ Failed to copy: ${src} → ${dest}\nError: ${error.message}`));
+        process.exit(1); // Stop the build on failure
+    }
 };
 
-// Function to copy a directory while excluding `.html` files
-const copyDirectory = (srcDir, destDir, excludeHTML = false) => {
+// Function to recursively copy directories (skipping _* files)
+const copyDirectory = (srcDir, destDir) => {
     if (!fs.existsSync(destDir)) {
         fs.mkdirSync(destDir, { recursive: true });
     }
@@ -30,51 +42,49 @@ const copyDirectory = (srcDir, destDir, excludeHTML = false) => {
         const srcPath = path.join(srcDir, file);
         const destPath = path.join(destDir, file);
 
+        if (file.startsWith("_")) {
+            console.log(chalk.yellow(`⚠️  Skipping hidden file/folder: ${srcPath}`));
+            return; // Skip _* files and folders
+        }
+
         if (fs.statSync(srcPath).isDirectory()) {
-            copyDirectory(srcPath, destPath, excludeHTML);
+            copyDirectory(srcPath, destPath);
         } else {
-            if (excludeHTML && file.endsWith(".html")) {
-                console.log(`Skipping HTML file: ${srcPath}`);
-                return;
-            }
             copyFile(srcPath, destPath);
         }
     });
 };
 
-// Function to find and process `_include.html` files in any directory
+// Function to process HTML files and replace `{{ include _file.html }}`
 const processHTML = (filePath, baseDir) => {
     let content = fs.readFileSync(filePath, "utf8");
 
-    // Handle {{ include _filename.html }} shortcodes
+    // Replace includes for `_*.html` files
     content = content.replace(/\{\{\s*include\s+([\w./-]+)\s*\}\}/g, (match, includeFile) => {
         let includePath;
 
-        // If it's a common include (e.g., common/header.html)
-        if (includeFile.startsWith("common/")) {
-            includePath = path.join(CONTENT_DIR, includeFile);
+        // ✅ If the path starts with '/', resolve from content/ (absolute path)
+        if (includeFile.startsWith("/")) {
+            includePath = path.join(CONTENT_DIR, includeFile.substring(1)); // Remove leading '/'
         }
-        // If it's a local include (e.g., _include-me.html)
-        else if (includeFile.startsWith("_")) {
-            includePath = path.join(baseDir, includeFile);
-        }
-        // If no match, assume it's in the root of content/
+        // ✅ Otherwise, resolve from the current directory (relative path)
         else {
-            includePath = path.join(CONTENT_DIR, includeFile);
+            includePath = path.join(baseDir, includeFile);
         }
 
         if (fs.existsSync(includePath)) {
+            console.log(chalk.green(`✅ Included: ${includeFile}`));
             return fs.readFileSync(includePath, "utf8");
         } else {
-            console.warn(`Include file not found: ${includePath}`);
-            return ""; // Remove the shortcode if file is missing
+            console.error(chalk.red(`❌ Include file not found: ${includePath}`));
+            process.exit(1); // Stop execution on missing include
         }
     });
 
     return content;
 };
 
-// Recursive function to process content directory
+// Function to process content directory
 const processDirectory = (srcDir, destDir) => {
     if (!fs.existsSync(destDir)) {
         fs.mkdirSync(destDir, { recursive: true });
@@ -84,34 +94,25 @@ const processDirectory = (srcDir, destDir) => {
         const srcPath = path.join(srcDir, file);
         const destPath = path.join(destDir, file);
 
+        if (file.startsWith("_")) {
+            console.log(chalk.yellow(`⚠️  Skipping hidden file: ${srcPath}`));
+            return; // Ignore _* files
+        }
+
         if (fs.statSync(srcPath).isDirectory()) {
-            if (file === "common") return;
             processDirectory(srcPath, destPath);
-        } else if (file.startsWith("_")) {
-            console.log(`Skipping hidden include file: ${srcPath}`);
-            return; // Don't copy _*.html files
-        } else if (file === "index.html") {
+        } else if (file.endsWith(".html")) {
             const processedHTML = processHTML(srcPath, srcDir);
             fs.writeFileSync(destPath, processedHTML, "utf8");
-            console.log(`Generated: ${destPath}`);
+            console.log(chalk.green(`✅ Generated: ${destPath}`));
         } else {
             copyFile(srcPath, destPath);
         }
     });
 };
 
-// Ensure common/ is copied entirely, but exclude .html files
-const copyCommonFolder = () => {
-    const COMMON_SRC = path.join(CONTENT_DIR, "common");
-    const COMMON_DEST = path.join(PUBLIC_DIR, "common");
-    if (fs.existsSync(COMMON_SRC)) {
-        console.log(`Copying common folder to public directory (excluding .html files).`);
-        copyDirectory(COMMON_SRC, COMMON_DEST, true); // Exclude HTML files
-    }
-};
-
 // Start processing
+console.log(chalk.blue("\n🚀 Starting site generation...\n"));
 cleanPublicDir();
 processDirectory(CONTENT_DIR, PUBLIC_DIR);
-copyCommonFolder();
-console.log("Static site generation complete.");
+console.log(chalk.green("\n🎉 Site generation complete! Your files are ready in the public/ folder.\n"));

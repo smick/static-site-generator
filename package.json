@@ -18,5 +18,9 @@
     "livereload": "^0.9.3",
     "nodemon": "^3.1.9",
     "npm": "^11.1.0"
-  }
+  },
+  "dependencies": {
+    "chalk": "^5.4.1"
+  },
+  "type": "module"
 }
