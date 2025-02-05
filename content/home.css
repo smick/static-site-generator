@@ -1,6 +1,7 @@
 /* Home Page Specific Styles */
 main {
     text-align: center;
+    padding: 40px;
 }
 
 img.demo {
@@ -12,4 +13,23 @@ img.demo {
 
 img.demo:hover {
     transform: scale(1.05);
+}
+
+/* Quick Start Guide Styling */
+.how-it-works {
+    text-align: left;
+    display: inline-block;
+    margin: 20px auto;
+    /* padding: 25px; */
+    padding: 10px 25px;
+    background: #f0f0f0;
+    /* border-left: 5px solid #0073e6; */
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+}
+
+.how-it-works li {
+    margin: 10px 0;
+    font-size: 1.1em;
 }

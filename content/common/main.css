@@ -1,21 +1,20 @@
 /* General Styles */
 body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f8f8f8;
+    font-family: "Inter", sans-serif;
+    background-color: #f4f7fb;
     color: #333;
     text-align: center;
     margin: 0;
     padding: 0;
-    line-height: 1.6;
 }
 
-/* Header Styles */
+/* Header */
 header {
     background-color: #0073e6;
     color: white;
     padding: 20px;
-    text-align: center;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    font-size: 1.4rem;
+    font-weight: bold;
 }
 
 nav {
@@ -26,61 +25,58 @@ nav a {
     color: white;
     text-decoration: none;
     margin: 0 15px;
-    font-weight: bold;
+    font-weight: 600;
+    transition: opacity 0.2s ease-in-out;
 }
 
 nav a:hover {
-    text-decoration: underline;
+    opacity: 0.8;
 }
 
 /* Main Content */
 main {
-    padding: 40px 20px;
     max-width: 800px;
-    margin: 20px auto;
+    margin: 40px auto;
+    padding: 25px;
     background: white;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Footer Styles */
+/* How It Works Section (Regular text, no box) */
+.how-it-works {
+    text-align: left;
+    font-size: 1.1rem;
+    margin-top: 20px;
+    padding: 0;
+}
+
+/* Code Styling */
+code {
+    font-family: "Courier New", monospace;
+    background: #eef3fa;
+    padding: 3px 6px;
+    border-radius: 5px;
+    font-size: 0.95em;
+}
+
+/* Footer */
 footer {
     background-color: #0073e6;
     color: white;
     padding: 15px;
-    position: relative;
-    width: 100%;
-    bottom: 0;
-    text-align: center;
+    font-size: 0.9rem;
     margin-top: 40px;
+    text-align: center;
 }
 
 footer a {
-    color: #fff;
-}
-
-/* Links */
-a {
-    color: #0073e6;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-a:hover {
-    text-decoration: underline;
-}
-
-/* Buttons */
-button {
-    background-color: #0073e6;
     color: white;
-    border: none;
-    padding: 10px 20px;
-    font-size: 1em;
-    cursor: pointer;
-    border-radius: 5px;
+    font-weight: bold;
+    text-decoration: none;
+    margin: 0 8px;
 }
 
-button:hover {
-    background-color: #005bb5;
+footer a:hover {
+    text-decoration: underline;
 }
