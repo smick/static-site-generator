@@ -3,8 +3,7 @@
 ## 🚀 Overview
 Sx4 is a lightweight **static site generator** that:
 - Supports **reusable components** with `{{ include common/_header.html }}`.
-- Copies **all `.css`, `.js`, and asset files** automatically.
-- Handles **images** by copying any `img/` folder.
+- **Copies everything** to `public/`, **unless it starts with an underscore (`_`)**.
 - **Deletes old files** before rebuilding.
 - Provides **local development** with automatic hot reloading via `npm run dev`.
 
@@ -24,6 +23,8 @@ project/
 │   ├── test-page/      # Example subpage
 │   │   ├── index.html
 │   │   ├── test-page.css
+│   │   ├── img/           # Folder for test-page images
+│   │   │   ├── example.jpg  # Copied to /public/test-page/img/example.jpg
 │── public/            # Generated output (auto-deleted & rebuilt)
 │── src/               # Generator script
 │   ├── generate.js    # Site builder
@@ -34,6 +35,26 @@ project/
 
 ---
 
+## 📌 **How File Paths Work in Sx4**
+### ✅ **Absolute Paths (`/`)**
+Use **absolute paths** (`/`) when referencing assets **from anywhere in the site**:
+```html
+<link rel="stylesheet" href="/common/main.css">
+<script src="/common/main.js" defer></script>
+```
+- **Works in all subpages**, since `/common/main.css` is copied to `/public/common/main.css`.
+- Use `/common/anything` to reference assets in `common/` **from any page**.
+
+### ✅ **Relative Paths (No `/`)**
+Use **relative paths** for **local assets within a folder**:
+```html
+<img src="img/example.jpg" alt="Example Image">
+```
+- If used in `/test-page/index.html`, it correctly loads from `/public/test-page/img/example.jpg`.
+- **DO NOT** use a leading `/` unless the file exists in `public/` root.
+
+---
+
 ## 🛠 Usage
 
 ### **1️⃣ Generate the Site**
@@ -41,25 +62,24 @@ project/
 npm run build
 ```
 - Clears `public/`
-- Processes `index.html`
-- Copies `.css`, `.js`, and `img/`
+- Processes `.html` files
+- Copies **everything** unless it **starts with `_`**
 - Inserts `{{ include _file.html }}` where needed
 
 ### **2️⃣ Use Reusable Components**
 **In any HTML file**, include shared components like this:
 ```html
-{{ include common/_header.html }}
+{{ include /common/_header.html }}
 ```
 - Files starting with `_` (e.g., `_header.html`) **are NOT copied** to `public/`, but can be **included dynamically**.
 
-### **3️⃣ Include Any CSS or JS**
-- All `.css` and `.js` files inside `common/` or subfolders **are copied automatically**.
-- Just link them in your HTML like this:
+### **3️⃣ Link Any CSS or JS**
 ```html
 <link rel="stylesheet" href="/common/main.css">
 <script src="/common/main.js" defer></script>
 ```
-- **Works in all subpages**, since `/common/main.css` is copied to `public/common/main.css`.
+- **Works anywhere in the project.**
+- Use `/common/` for assets in the `common/` folder.
 
 ### **4️⃣ Serve the Site Locally**
 ```sh
@@ -70,10 +90,22 @@ npm run dev
 
 ---
 
+## 🚀 Deployment
+
+### **How to Deploy**
+1. **Run the build command** to generate the `public/` folder:
+   ```sh
+   npm run build
+   ```
+2. **Serve the `public/` folder** using any static hosting provider (e.g., Netlify, Vercel, GitHub Pages, Nginx, Apache).
+
+---
+
 ## 🎯 Features Recap
-✅ **Auto file copying** (CSS, JS, images, and other assets)  
+✅ **Copies everything** unless it starts with `_`  
 ✅ **Reusable includes** for headers & footers (ignored in output, used in templates)  
 ✅ **Automatic cleanup** before rebuilding  
 ✅ **Live preview with hot reload (`npm run dev`)**  
+✅ **Easy deployment—just serve `public/`**  
 
-💡 **Just run `npm run dev`, edit your files, and watch your site update live!** 🚀
+💡 **Run `npm run dev`, edit your files, and watch your site update live!** 🚀
